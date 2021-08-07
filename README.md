@@ -9,4 +9,4 @@ Nhóm 2:
 3 branches: 
 - Main: Document của Project
 - feature/api: Document và source code của API. Tạo API với Java Spring boot + Microsoft SQL Server
-- feature/api: Document và source code của UI   
+- feature/ui: Document và source code của UI   
