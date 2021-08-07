@@ -1,5 +1,5 @@
-Đồ án cuối kì thực hành môn Cơ sở dữ liệu nâng cao 
-Giáo viên hướng dẫn : Hồ Thị Hoàng Vy
+Đồ án cuối kì thực hành môn Cơ sở dữ liệu nâng cao<br>
+Giáo viên hướng dẫn : Hồ Thị Hoàng Vy<br>
 Nhóm 2: 
 - Phạm Võ Đức Phong – 18126007
 - Nguyễn Sang – 18126029
@@ -9,4 +9,4 @@ Nhóm 2:
 3 branches: 
 - Main: Document của Project
 - feature/api: Document và source code của API. Tạo API với Java Spring boot + Microsoft SQL Server
--  feature/api: Document và source code của UI   
+- feature/ui: Document và source code của UI   
