@@ -15,7 +15,9 @@ Chi tiết: <br>
 
 ### 1. Clone repo
 
+```
 $ git clone https://github.com/mindland/doan_csdlnc.git
+```
 	
 ### 2. Install MongoDB
 
