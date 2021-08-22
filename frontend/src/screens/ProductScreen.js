@@ -178,4 +178,5 @@ function ProductScreen(props) {
     </div>
   );
 }
+
 export default ProductScreen;
