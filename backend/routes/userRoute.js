@@ -76,11 +76,11 @@ const router = express.Router();
 //   }
 // });
 
-router.post("/login", async (req, res) => {
+router.post("/signin", async (req, res) => {
   try {
-    userRepository.userLogin(req, res);
+    userRepository.userSignin(req, res);
   } catch (error) {
-    res.status(401).send({ message: "Invalid Email or Password."});
+    res.status(401).send({ message: "Invalid Email or Password." });
   }
 });
 

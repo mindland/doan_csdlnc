@@ -2,7 +2,7 @@ import sqlConfig from "../sqlConfig";
 import { getToken } from "../util";
 const sql = require("mssql");
 
-function userLogin(req, res) {
+function userSignin(req, res) {
   sql.connect(sqlConfig, (err) => {
     if (err) console.log(err);
     let request = new sql.Request();
@@ -31,5 +31,5 @@ function userLogin(req, res) {
 }
 
 module.exports = {
-  userLogin,
+  userSignin,
 };
