@@ -19,9 +19,25 @@ function getSoldProductStatistics(req, res) {
       }
     });
   });
-  }
+}
+
+function createShopUnit(req, res) {
+  const {shop_name, address, description, bank_account, business_license_code, email_owner, phone_owner} = req.body;
+  sql.connect(sqlConfig, (err) => {
+  if (err) console.log(err);
+  var request = new sql.Request();
+  const queryStatement =  `EXEC CreateShop '${shop_name}', '${address}', '${description}', '${bank_account}', '${business_license_code}', '${email_owner}', '${phone_owner}', ''`
+  request.query(queryStatement, (err, data) => {
+    if (err) console.log(err);
+    let isShopCreated = false;
+    if (data.rowsAffected[0] === 1)
+      isShopCreated = !isShopCreated
+    res.send({shopCreateStatus: isShopCreated})
+  });
+  });
+}
 
   module.exports = {
-    getSoldProductStatistics
+    getSoldProductStatistics, createShopUnit,
   };
   

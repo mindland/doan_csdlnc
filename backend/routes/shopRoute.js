@@ -13,4 +13,13 @@ router.post("/sold-product-statistics", jsonParser, async (req, res) => {
     }
 });
 
+
+router.post("/create-shop", jsonParser, async (req, res) => {
+    try {
+        userRepository.createShopUnit(req, res);
+    } catch (error) {
+        res.status(500).send({ message: "Fail to send request" });
+    }
+});
+
 export default router;
