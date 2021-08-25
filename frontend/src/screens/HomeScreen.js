@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { useSelector, useDispatch } from 'react-redux';
-import { listProducts } from '../actions/productActions';
-import Rating from '../components/Rating';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import { listProducts } from "../actions/productActions";
+import Rating from "../components/Rating";
 
 function HomeScreen(props) {
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const [sortOrder, setSortOrder] = useState('');
-  const category = props.match.params.id ? props.match.params.id : '';
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [sortOrder, setSortOrder] = useState("");
+  const category = props.match.params.id ? props.match.params.id : "";
   const productList = useSelector((state) => state.productList);
   const { products, loading, error } = productList;
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(listProducts(category));
+    dispatch(listProducts());
 
     return () => {
       //
@@ -22,11 +22,11 @@ function HomeScreen(props) {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(listProducts(category, searchKeyword, sortOrder));
+    dispatch(listProducts());
   };
   const sortHandler = (e) => {
     setSortOrder(e.target.value);
-    dispatch(listProducts(category, searchKeyword, sortOrder));
+    dispatch(listProducts());
   };
 
   return (
@@ -44,7 +44,7 @@ function HomeScreen(props) {
           </form>
         </li>
         <li>
-          Sort By{' '}
+          Sort By{" "}
           <select name="sortOrder" onChange={sortHandler}>
             <option value="">Newest</option>
             <option value="lowest">Lowest</option>
@@ -59,24 +59,28 @@ function HomeScreen(props) {
       ) : (
         <ul className="products">
           {products.map((product) => (
-            <li key={product._id}>
+            <li key={product.Product_ID}>
               <div className="product">
-                <Link to={'/product/' + product._id}>
+                <Link to={"/product/" + product.Product_ID}>
                   <img
                     className="product-image"
-                    src={product.image}
+                    src={product.Image}
                     alt="product"
                   />
                 </Link>
                 <div className="product-name">
-                  <Link to={'/product/' + product._id}>{product.name}</Link>
+                  <Link to={"/product/" + product.Product_ID}>
+                    {product.Name}
+                  </Link>
                 </div>
-                <div className="product-brand">{product.brand}</div>
-                <div className="product-price">${product.price}</div>
+                <div className="product-brand">{product.Inventory}</div>
+                <div className="product-brand">{product.Size}</div>
+                <div className="product-brand">{product.Color}</div>
+                <div className="product-Price">${product.Price}</div>
                 <div className="product-rating">
                   <Rating
                     value={product.rating}
-                    text={product.numReviews + ' reviews'}
+                    text={product.numReviews + " reviews"}
                   />
                 </div>
               </div>

@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
 import {
   saveProduct,
   listProducts,
   deleteProdcut,
-} from '../actions/productActions';
+} from "../actions/productActions";
 
 function ProductsScreen(props) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [id, setId] = useState('');
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [image, setImage] = useState('');
-  const [brand, setBrand] = useState('');
-  const [category, setCategory] = useState('');
-  const [countInStock, setCountInStock] = useState('');
-  const [description, setDescription] = useState('');
-  const [uploading, setUploading] = useState(false);
+  const [id, setId] = useState("");
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [sold, setSold] = useState("");
+  const [origin, setOrigin] = useState("");
+  const [category, setCategory] = useState("");
+  const [shop_name, setShopName] = useState("");
   const productList = useSelector((state) => state.productList);
   const { loading, products, error } = productList;
 
@@ -48,53 +47,34 @@ function ProductsScreen(props) {
 
   const openModal = (product) => {
     setModalVisible(true);
-    setId(product._id);
+    setId(product.id);
     setName(product.name);
     setPrice(product.price);
-    setDescription(product.description);
-    setImage(product.image);
-    setBrand(product.brand);
+    setQuantity(product.quantity);
+    setSold(product.sold);
+    setOrigin(product.origin);
     setCategory(product.category);
-    setCountInStock(product.countInStock);
+    setShopName(product.shop_name);
   };
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(
       saveProduct({
-        _id: id,
+        id,
         name,
         price,
-        image,
-        brand,
+        quantity,
+        sold,
+        origin,
         category,
-        countInStock,
-        description,
+        shop_name,
       })
     );
   };
   const deleteHandler = (product) => {
-    dispatch(deleteProdcut(product._id));
+    dispatch(deleteProdcut(product.Product_ID));
   };
-  const uploadFileHandler = (e) => {
-    const file = e.target.files[0];
-    const bodyFormData = new FormData();
-    bodyFormData.append('image', file);
-    setUploading(true);
-    axios
-      .post('/api/uploads', bodyFormData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((response) => {
-        setImage(response.data);
-        setUploading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setUploading(false);
-      });
-  };
+
   return (
     <div className="content content-margined">
       <div className="product-header">
@@ -136,39 +116,37 @@ function ProductsScreen(props) {
                 ></input>
               </li>
               <li>
-                <label htmlFor="image">Image</label>
+                <label htmlFor="quantity">quantity</label>
                 <input
                   type="text"
-                  name="image"
-                  value={image}
-                  id="image"
-                  onChange={(e) => setImage(e.target.value)}
-                ></input>
-                <input type="file" onChange={uploadFileHandler}></input>
-                {uploading && <div>Uploading...</div>}
-              </li>
-              <li>
-                <label htmlFor="brand">Brand</label>
-                <input
-                  type="text"
-                  name="brand"
-                  value={brand}
-                  id="brand"
-                  onChange={(e) => setBrand(e.target.value)}
+                  name="quantity"
+                  value={quantity}
+                  id="quantity"
+                  onChange={(e) => setQuantity(e.target.value)}
                 ></input>
               </li>
               <li>
-                <label htmlFor="countInStock">CountInStock</label>
+                <label htmlFor="sold">sold</label>
                 <input
                   type="text"
-                  name="countInStock"
-                  value={countInStock}
-                  id="countInStock"
-                  onChange={(e) => setCountInStock(e.target.value)}
+                  name="sold"
+                  value={sold}
+                  id="sold"
+                  onChange={(e) => setSold(e.target.value)}
                 ></input>
               </li>
               <li>
-                <label htmlFor="name">Category</label>
+                <label htmlFor="origin">origin</label>
+                <input
+                  type="text"
+                  name="origin"
+                  value={origin}
+                  id="origin"
+                  onChange={(e) => setOrigin(e.target.value)}
+                ></input>
+              </li>
+              <li>
+                <label htmlFor="Category">Category</label>
                 <input
                   type="text"
                   name="category"
@@ -178,17 +156,18 @@ function ProductsScreen(props) {
                 ></input>
               </li>
               <li>
-                <label htmlFor="description">Description</label>
+                <label htmlFor="shop_name">shop_name</label>
                 <textarea
-                  name="description"
-                  value={description}
-                  id="description"
-                  onChange={(e) => setDescription(e.target.value)}
+                  type="text"
+                  name="shop_name"
+                  value={shop_name}
+                  id="shop_name"
+                  onChange={(e) => setShopName(e.target.value)}
                 ></textarea>
               </li>
               <li>
                 <button type="submit" className="button primary">
-                  {id ? 'Update' : 'Create'}
+                  {id ? "Update" : "Create"}
                 </button>
               </li>
               <li>
@@ -212,23 +191,23 @@ function ProductsScreen(props) {
               <th>ID</th>
               <th>Name</th>
               <th>Price</th>
-              <th>Category</th>
-              <th>Brand</th>
+              <th>Quantity</th>
+              <th>origin</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {products.map((product) => (
-              <tr key={product._id}>
-                <td>{product._id}</td>
-                <td>{product.name}</td>
-                <td>{product.price}</td>
-                <td>{product.category}</td>
-                <td>{product.brand}</td>
+              <tr key={product.Product_ID}>
+                <td>{product.Product_ID}</td>
+                <td>{product.Name}</td>
+                <td>{product.Price}</td>
+                <td>{product.Quantity}</td>
+                <td>{product.Origin}</td>
                 <td>
                   <button className="button" onClick={() => openModal(product)}>
                     Edit
-                  </button>{' '}
+                  </button>{" "}
                   <button
                     className="button"
                     onClick={() => deleteHandler(product)}

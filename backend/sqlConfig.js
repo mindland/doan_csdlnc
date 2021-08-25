@@ -1,6 +1,6 @@
 export default {
   user: "sa",
-  password: "123456",
+  password: "sa",
   database: "THUONGMAIDIENTU",
   server: "localhost",
   port: 1433,

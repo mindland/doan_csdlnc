@@ -1,6 +1,29 @@
 import sqlConfig from "../sqlConfig";
 import { getToken } from "../util";
 const sql = require("mssql");
+const fs = require("fs");
+
+function getAllUsers(req, res) {
+  sql.connect(sqlConfig, (err) => {
+    if (err) console.log(err);
+    let request = new sql.Request();
+    let queryString = `select * from [User]`;
+    console.log(queryString);
+    request.query(queryString, (err, data) => {
+      if (err) console.log(err);
+
+      const jsonString = JSON.stringify(data.recordset);
+      fs.writeFile("C:/Users/hoang/Desktop/DO AN/react-admin/src/assets/JsonData/customers-list_1.json", jsonString, (err) => {
+        if (err) {
+          console.log("Error writing file", err);
+        } else {
+          console.log("Successfully write file");
+        }
+      });
+      res.send(data.recordset);
+    });
+  });
+}
 
 function userSignin(req, res) {
   sql.connect(sqlConfig, (err) => {
@@ -31,30 +54,41 @@ function userSignin(req, res) {
 }
 
 function registerAccount(req, res) {
-  const { firstname, lastname, email, password, address, city, phonenumber, date_of_birth } = req.body;
+  const {
+    firstname,
+    lastname,
+    email,
+    password,
+    address,
+    city,
+    phonenumber,
+    date_of_birth,
+  } = req.body;
   sql.connect(sqlConfig, (err) => {
     if (err) console.log(err);
     var request = new sql.Request();
-    const queryStatement = `EXEC UserSignUp '', '${firstname}', '${lastname}', '${email}', '${password}', '${address}', '${city}', '${phonenumber}', '${date_of_birth}', ''`
+    const queryStatement = `EXEC UserSignUp '', '${firstname}', '${lastname}', '${email}', '${password}', '${address}', '${city}', '${phonenumber}', '${date_of_birth}', ''`;
     request.query(queryStatement, (err, data) => {
       if (err) console.log(err);
       if (!data) {
-        res.status(400).json({ errors: [{ msg: 'Fail to register a new account' }] });
+        res
+          .status(400)
+          .json({ errors: [{ msg: "Fail to register a new account" }] });
         res.send({ registerStatus: false });
-      }
-      else {
+      } else {
         if (data.rowsAffected.length === 0) {
-          res.status(400).json({ errors: [{ msg: 'User already existed' }] });
+          res.status(400).json({ errors: [{ msg: "User already existed" }] });
           res.send({ registerStatus: false });
+        } else {
+          res.send({ registerStatus: true });
         }
-        else {
-          res.send({ registerStatus: true })
-        }
-      };
+      }
     });
   });
 }
 
 module.exports = {
-  userSignin, registerAccount
+  getAllUsers,
+  userSignin,
+  registerAccount,
 };
