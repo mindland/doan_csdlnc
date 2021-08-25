@@ -4,7 +4,6 @@ var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json();
 const router = express.Router();
 
-
 router.post("/sold-product-statistics", jsonParser, async (req, res) => {
     try {
         await shopRepository.getSoldProductStatistics(req, res);

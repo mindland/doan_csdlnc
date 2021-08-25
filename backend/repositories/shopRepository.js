@@ -37,8 +37,21 @@ function createShopUnit(req, res) {
   });
 }
 
-function getMonthlyRevenueStatistics(res, req) {
-
+function getMonthlyRevenueStatistics(req, res) {
+  const { year, user_id } = req.query;
+  sql.connect(sqlConfig, (err) => {
+    if (err) console.log(err);
+    var request = new sql.Request();
+    const queryStatement = `EXEC RevenueStatistic '', '', '', ${year}, ${user_id}`
+    request.query(queryStatement, (err, data) => {
+      if (err) console.log(err);
+      console.log(data)
+      if (!data)
+        res.status(400).json({ errors: [{ msg: 'Fail to get statistics' }] });
+      res.send(data.recordset);
+      }
+    );
+  });
 }
 
 module.exports = {
