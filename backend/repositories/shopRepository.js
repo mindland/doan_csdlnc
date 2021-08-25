@@ -37,6 +37,10 @@ function createShopUnit(req, res) {
   });
 }
 
+function getMonthlyRevenueStatistics(res, req) {
+
+}
+
 module.exports = {
-  getSoldProductStatistics, createShopUnit,
+  getSoldProductStatistics, createShopUnit, getMonthlyRevenueStatistics,
 };
